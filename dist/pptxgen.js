@@ -2760,6 +2760,31 @@ var PptxGenJS = function(){
 						strXml += '    </c:numRef>';
 						strXml += '  </c:val>';
 					}
+					
+					// 3: "Data Labels"
+					{
+						strXml += '  <c:dLbls>';
+						strXml += '    <c:numFmt formatCode="'+ opts.dataLabelFormatCode +'" sourceLinked="0"/>';
+						strXml += '    <c:txPr>';
+						strXml += '      <a:bodyPr/>';
+						strXml += '      <a:lstStyle/>';
+						strXml += '      <a:p><a:pPr>';
+						strXml += '        <a:defRPr b="0" i="0" strike="noStrike" sz="'+ (opts.dataLabelFontSize || DEF_FONT_SIZE) +'00" u="none">';
+						strXml += '          <a:solidFill>'+ createColorElement(obj.customDataLabelColor || opts.dataLabelColor || DEF_FONT_COLOR) +'</a:solidFill>';
+						strXml += '          <a:latin typeface="'+ (opts.dataLabelFontFace || 'Arial') +'"/>';
+						strXml += '        </a:defRPr>';
+						strXml += '      </a:pPr></a:p>';
+						strXml += '    </c:txPr>';
+						if ( opts.type != 'area' ) strXml += '<c:dLblPos val="'+ (opts.dataLabelPosition || 'outEnd') +'"/>';
+						strXml += '    <c:showLegendKey val="0"/>';
+						strXml += '    <c:showVal val="'+ (opts.showValue ? '1' : '0') +'"/>';
+						strXml += '    <c:showCatName val="0"/>';
+						strXml += '    <c:showSerName val="0"/>';
+						strXml += '    <c:showPercent val="0"/>';
+						strXml += '    <c:showBubbleSize val="0"/>';
+						strXml += '    <c:showLeaderLines val="0"/>';
+						strXml += '  </c:dLbls>';
+					}
 
 					// Option: `smooth`
 					if ( chartType == 'line' ) strXml += '<c:smooth val="'+ (opts.lineSmooth ? "1" : "0" ) +'"/>';
@@ -2767,31 +2792,6 @@ var PptxGenJS = function(){
 					// 4: Close "SERIES"
 					strXml += '</c:ser>';
 				});
-
-				// 3: "Data Labels"
-				{
-					strXml += '  <c:dLbls>';
-					strXml += '    <c:numFmt formatCode="'+ opts.dataLabelFormatCode +'" sourceLinked="0"/>';
-					strXml += '    <c:txPr>';
-					strXml += '      <a:bodyPr/>';
-					strXml += '      <a:lstStyle/>';
-					strXml += '      <a:p><a:pPr>';
-					strXml += '        <a:defRPr b="0" i="0" strike="noStrike" sz="'+ (opts.dataLabelFontSize || DEF_FONT_SIZE) +'00" u="none">';
-					strXml += '          <a:solidFill>'+ createColorElement(opts.dataLabelColor || DEF_FONT_COLOR) +'</a:solidFill>';
-					strXml += '          <a:latin typeface="'+ (opts.dataLabelFontFace || 'Arial') +'"/>';
-					strXml += '        </a:defRPr>';
-					strXml += '      </a:pPr></a:p>';
-					strXml += '    </c:txPr>';
-					if ( opts.type != 'area' ) strXml += '<c:dLblPos val="'+ (opts.dataLabelPosition || 'outEnd') +'"/>';
-					strXml += '    <c:showLegendKey val="0"/>';
-					strXml += '    <c:showVal val="'+ (opts.showValue ? '1' : '0') +'"/>';
-					strXml += '    <c:showCatName val="0"/>';
-					strXml += '    <c:showSerName val="0"/>';
-					strXml += '    <c:showPercent val="0"/>';
-					strXml += '    <c:showBubbleSize val="0"/>';
-					strXml += '    <c:showLeaderLines val="0"/>';
-					strXml += '  </c:dLbls>';
-				}
 
 				// 4: Add more chart options (gapWidth, line Marker, etc.)
 				if ( chartType == 'bar' ) {
